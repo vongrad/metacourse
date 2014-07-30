@@ -110,7 +110,7 @@ if ($enrolGuy && $enrolCourse && $enrolRole) {
 		$enrol->enrol_user($instance, $enrolGuy, $role);
 		$DB->set_field("user_enrolments", "status", 0, array("enrolid"=>$instance->id, "userid"=>$enrolGuy));
 		if ($sendEmail) {
-			if (is_enrolled($context, $user)) {
+			if (is_user_enrolled($enrolGuy, $enrolCourse)) {
 				$enrol->send_confirmation_email($enrolUser, $enrolCourse);
 				redirect(new moodle_url($CFG->wwwroot."/blocks/metacourse/list_metacourses.php"), "You've been enrolled", 5);
 			} else {

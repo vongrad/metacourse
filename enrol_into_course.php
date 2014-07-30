@@ -57,7 +57,8 @@ if ($total_places - $busy_places > 0) {
 		$DB->insert_record("meta_tos_accept", $accept);
 	}
 
-	if (is_enrolled($context, $user)) {
+	if (is_user_enrolled($userid, $courseid)) {
+        add_to_log($courseid, 'block_metacourse', 'add enrolment', 'blocks/metacourse/enrol_into_course.php', "JJJJJJUst enrolled $userid into course $courseid");
 		$enrol->send_confirmation_email($user, $courseid);
 		redirect(new moodle_url($CFG->wwwroot."/blocks/metacourse/list_metacourses.php"), "You've been enrolled", 5);
 	} else {

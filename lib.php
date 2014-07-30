@@ -787,3 +787,14 @@ function get_users_on_waitinglist($courseid) {
          array("courseid"=>$courseid)
     );
 }
+
+function is_user_enrolled($userid, $courseid){
+    global $DB;
+
+    $enrol = $DB->get_records_sql("SELECT e.courseid, ue.userid FROM mdl_enrol e
+        JOIN mdl_user_enrolments ue ON e.id = ue.enrolid
+        WHERE e.courseid = :courseid  AND ue.userid = :userid",
+        array('userid' => $userid, 'courseid' => $courseid));
+
+    return !empty($enrol);
+}
