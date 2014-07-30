@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/label/db" VERSION="20140516" COMMENT="XMLDB file for Moodle mod/metacourse"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="meta_waitlist" COMMENT="Main information about meta_waitlist">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timeend" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="nodates" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="on a course without dates (no moodle course) this value will be 1, and the course id in the row will represent the datecourse id, not the moodlecourseid."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_allow_enrol" COMMENT="Who can enrol who">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="canenrol" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="canbeenrolled" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="canenrol" TYPE="foreign" FIELDS="canenrol" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="canbeenrolled" TYPE="foreign" FIELDS="canenrol" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_providers" COMMENT="Providers for the metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="provider" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="role" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="role" TYPE="foreign" FIELDS="role" REFTABLE="role" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_course" COMMENT="Defines metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="localname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="localname_lang" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="purpose" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="target" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="target_description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="content" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="instructors" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="comment" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="duration" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="duration_unit" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cancellation" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lodging" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="contact" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="multiple_dates" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coordinator" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user in user table"/>
+        <FIELD NAME="provider" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="unpublishdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Actually it's end enrolment date"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="coordinator" TYPE="foreign" FIELDS="coordinator" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="provider" TYPE="foreign" FIELDS="provider" REFTABLE="meta_providers" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_template" COMMENT="Defines templates for metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="localname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="localname_lang" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="purpose" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="target" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="target_description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="content" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="instructors" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="comment" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="duration" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="duration_unit" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cancellation" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lodging" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="contact" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coordinator" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user in user table"/>
+        <FIELD NAME="provider" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="unpublishdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Actually it's end enrolment date"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="coordinator" TYPE="foreign" FIELDS="coordinator" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="provider" TYPE="foreign" FIELDS="provider" REFTABLE="meta_providers" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_locations" COMMENT="Locations for the metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="location" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_currencies" COMMENT="Currencies for the metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="currency" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="active" TYPE="char" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_languages" COMMENT="Languages for the metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="language" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="iso" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="active" TYPE="char" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_datecourse" COMMENT="Defines courses in different dates">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="metaid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="startdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="enddate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timezone" TYPE="char" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="publishdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="unpublishdate" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Actually it's end enrolment date"/>
+        <FIELD NAME="startenrolment" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="location" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="lang" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="price" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="currencyid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="total_places" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="free_places" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="coordinator" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user in user table"/>
+        <FIELD NAME="category" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the category in the course_categories table"/>
+        <FIELD NAME="open" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false" COMMENT="0 = open for registration, 1 = registration closed"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="country" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="remarks" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="metaid" TYPE="foreign" FIELDS="metaid" REFTABLE="metacourse" REFFIELDS="id"/>
+        <KEY NAME="location" TYPE="foreign" FIELDS="location" REFTABLE="meta_locations" REFFIELDS="id"/>
+        <KEY NAME="lang" TYPE="foreign" FIELDS="lang" REFTABLE="meta_languages" REFFIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="currencyid" TYPE="foreign" FIELDS="currencyid" REFTABLE="meta_currencies" REFFIELDS="id"/>
+        <KEY NAME="coordinator" TYPE="foreign" FIELDS="coordinator" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="category" TYPE="foreign" FIELDS="category" REFTABLE="course_categories" REFFIELDS="id"/>
+        <KEY NAME="country" TYPE="foreign" FIELDS="country" REFTABLE="meta_countries" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_tos" COMMENT="Defines terms of service for courses. Will only have one row.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="tos" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_tos_accept" COMMENT="Keeps a list of the users and the courses they have accepted to be enrolled in">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ID of the user in user table"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="accepted" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timeaccepted" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_category" COMMENT="First level of categories">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_category_translation" COMMENT="Translations for the custom category names">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="meta_category_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="translation" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="lang" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="lang" TYPE="foreign" FIELDS="lang" REFTABLE="meta_languages" REFFIELDS="id"/>
+        <KEY NAME="meta_category_id" TYPE="foreign" FIELDS="meta_category_id" REFTABLE="meta_category" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_competence_translation" COMMENT="Translations for the moodle category names/competences">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="meta_competence_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="translation" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="lang" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="lang" TYPE="foreign" FIELDS="lang" REFTABLE="meta_languages" REFFIELDS="id"/>
+        <KEY NAME="meta_competence_id" TYPE="foreign" FIELDS="meta_competence_id" REFTABLE="course_categories" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_custom_emails" COMMENT="Custom emails for metacourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="metaid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="lang" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="text" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="metaid" TYPE="foreign" FIELDS="metaid" REFTABLE="meta_course" REFFIELDS="id"/>
+        <KEY NAME="lang" TYPE="foreign" FIELDS="lang" REFTABLE="meta_languages" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="meta_countries" COMMENT="countries for the datecourses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="country" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
